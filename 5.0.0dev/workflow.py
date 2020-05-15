@@ -12,7 +12,6 @@ logging.basicConfig(level=logging.DEBUG)
 # --- Add Pegasus Python Modules -----------------------------------------------
 # If you are using a virtual environment that already has the Pegasus.api package
 # already installed, you may skip this step.
-os.environ["PATH"] += os.pathsep + "/Users/ryantanaka/ISI/pegasus/dist/pegasus-5.0.0dev/bin"
 
 try:
     pegasus_python = subprocess.run(
@@ -26,7 +25,7 @@ except FileNotFoundError:
 
 assert pegasus_python.returncode == 0
 
-os.environ["PYTHONPATH"] = pegasus_python.stdout.decode().strip()
+sys.path.append(pegasus_python.stdout.decode().strip())
 
 # --- Import Pegasus API -------------------------------------------------------
 from Pegasus.api import *
@@ -58,6 +57,7 @@ props.write()
 # XML site catalog, skip this step, and use pegasus-sc-converter to convert your
 # catalog from XML to YAML.
 
+
 sc = SiteCatalog()
 
 shared_scratch_dir = str(WORK_DIR / RUN_ID)
@@ -68,7 +68,7 @@ local = Site("local")\
                     Directory(Directory.SHAREDSCRATCH, shared_scratch_dir)
                         .add_file_servers(FileServer("file://" + shared_scratch_dir, Operation.ALL)),
                     
-                    Directory(Directory.LOCALSCRATCH, local_storage_dir)
+                    Directory(Directory.LOCALSTORAGE, local_storage_dir)
                         .add_file_servers(FileServer("file://" + local_storage_dir, Operation.ALL))
                 )
 
@@ -217,10 +217,12 @@ wf.add_jobs(
 # created above. If you have used pegasus-plan before, usage will be almost identical.
 try:
     wf.plan(
+        verbose=5,
         dir=str(WORK_DIR),
         relative_dir=RUN_ID,
         submit=True
     ).wait()
 except Exception as e:
-    print(e)
+    print(e.args[1].stdout)
+    print(e.args[1].stderr)
 

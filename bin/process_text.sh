@@ -5,7 +5,7 @@ OUTPUT_FILE=$2
 
 cp $INPUT_FILE $OUTPUT_FILE
 
-words=("racehorse" "five" "zero" "snake" "books")
+words=("carousel_horse" "snake" "books")
 
 for w in "${words[@]}"
 do

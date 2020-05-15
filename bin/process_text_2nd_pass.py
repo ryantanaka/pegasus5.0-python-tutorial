@@ -15,5 +15,5 @@ with open(input_filename, "r") as in_file, open(result_filename, "w") as result_
 
      # process txt
      result_file.write(
-         emoji.emojize(in_file.read())
+         emoji.emojize(in_file.read(), use_aliases=True)
      )

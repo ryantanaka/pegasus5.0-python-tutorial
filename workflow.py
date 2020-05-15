@@ -11,7 +11,8 @@ logging.basicConfig(level=logging.DEBUG)
 
 # --- Add Pegasus Python Modules -----------------------------------------------
 # If you are using a virtual environment that already has the Pegasus.api package
-# already installed, you may skip this step.
+# already installed, you may skip this step. Make sure that pegasus-* (pegasus-version
+# etc. is in your PATH, and that 5.0.0dev is being used.
 
 try:
     pegasus_python = subprocess.run(
@@ -115,7 +116,7 @@ preprocess = Transformation(
 process_text = Transformation(
                     "process_text.sh", 
                     site="local", 
-                    pfn=str(Path(__file__).resolve().parents[1] / "bin/process_text.sh"), 
+                    pfn=str(Path(__file__).parent.resolve() / "bin/process_text.sh"), 
                     is_stageable=True
                 )
 
@@ -151,7 +152,7 @@ tc.write()
 initial_input_file = File("initial_input_file.txt").add_metadata(size=54)
 
 rc = ReplicaCatalog()\
-        .add_replica("local", "initial_input_file.txt", str(Path(__file__).resolve().parents[1] / "initial_input_file.txt"))\
+        .add_replica("local", "initial_input_file.txt", str(Path(__file__).parent.resolve() / "initial_input_file.txt"))\
         .write()
 
 # Again, pegasus-planner will know to look for this file in cwd.
@@ -217,7 +218,6 @@ wf.add_jobs(
 # created above. If you have used pegasus-plan before, usage will be almost identical.
 try:
     wf.plan(
-        verbose=5,
         dir=str(WORK_DIR),
         relative_dir=RUN_ID,
         submit=True

@@ -218,7 +218,7 @@ wf.add_jobs(
 try:
     wf.plan(
         dir=str(WORK_DIR),
-        relative_dir=RUN_ID
+        relative_dir=RUN_ID,
         submit=True
     ).wait()
 except Exception as e:

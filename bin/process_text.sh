@@ -9,5 +9,5 @@ words=("racehorse" "five" "zero" "snake" "books")
 
 for w in "${words[@]}"
 do
-    sed -i "" -e "s/$w/:$w:/g" $OUTPUT_FILE
+    sed -i -e "s/$w/:$w:/g" $OUTPUT_FILE
 done

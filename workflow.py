@@ -66,10 +66,10 @@ local_storage_dir = str(WORK_DIR / "outputs" / RUN_ID)
 
 local = Site("local")\
                 .add_directories(
-                    Directory(Directory.SHAREDSCRATCH, shared_scratch_dir)
+                    Directory(Directory.SHARED_SCRATCH, shared_scratch_dir)
                         .add_file_servers(FileServer("file://" + shared_scratch_dir, Operation.ALL)),
                     
-                    Directory(Directory.LOCALSTORAGE, local_storage_dir)
+                    Directory(Directory.LOCAL_STORAGE, local_storage_dir)
                         .add_file_servers(FileServer("file://" + local_storage_dir, Operation.ALL))
                 )
 
